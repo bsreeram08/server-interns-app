@@ -134,3 +134,32 @@ exports.signUp = async (req, res) => {
     message: "User added sucessfully",
   });
 }
+exports.getUserID = async (req, res) => {
+  const body = req.body;
+  if (!body) {
+    res.status(403).send({
+      status: "ERROR",
+      message: "Invalid parameters",
+    });
+    return;
+  }
+  const userName = body.username;
+  const allUsers = await usersRef.get();
+  let userID = "";
+  allUsers.forEach(user => {
+    if (user.data().username === userName) {
+      userID = user.id;
+    }
+  });
+  if (userID === "") {
+    res.status(404).send({
+      ststus: "ERROR",
+      message: "Error user with that ID not available"
+    });
+  }
+  res.status(200).send({
+    ststus: "SUCESS",
+    message: "User found.",
+    userID: userID
+  });
+}
