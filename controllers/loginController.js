@@ -107,3 +107,30 @@ exports.performUsersLogin = async (req, res) => {
   });
   return;
 };
+exports.signUp = async (req, res) => {
+  const body = req.body;
+  if (!body) {
+    res.status(403).send({
+      status: "ERROR",
+      message: "Invalid parameters",
+    });
+    return;
+  }
+  const userName = body.username;
+  const password = body.password;
+  if (!userName || !password) {
+    res.status(403).send({
+      status: "ERROR",
+      message: "Invalid parameters",
+    });
+    return;
+  }
+  await usersRef.add({
+    username: userName,
+    password: password
+  });
+  res.status(200).send({
+    status: "SUCESS",
+    message: "User added sucessfully",
+  });
+}
