@@ -145,12 +145,13 @@ exports.getUserID = async (req, res) => {
   }
   const userName = body.username;
   const allUsers = await usersRef.get();
-  let userID = "";
-  allUsers.forEach(user => {
-    if (user.data().username === userName) {
-      userID = user.id;
-    }
-  });
+  const currentUserSnapshot = await usersRef.where(
+    "username",
+    "==",
+    userName.toLowerCase()
+  ).get();
+  const userdata = currentUserSnapshot.docs[0];
+  const userID = userdata.id;
   if (userID === "") {
     res.status(404).send({
       ststus: "ERROR",
@@ -160,6 +161,6 @@ exports.getUserID = async (req, res) => {
   res.status(200).send({
     ststus: "SUCESS",
     message: "User found.",
-    userID: userID
+    userID: `${userID}`
   });
 }
