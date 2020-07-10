@@ -8,12 +8,10 @@ const db = firebase.firestore();
 const usersRef = db.collection('Users');
 exports.addAssignment = async (req, res) => {
     const body = req.body;
-    const uid = body.uid;
+    const username = body.username;
     const assignmentId = body.assignmentId;
     const assignmentData = body.assignment;
     const userType = body.userType;
-    const userRef = await usersRef.doc(uid);
-    const userData = await userRef.get();
     if (!body) {
         res.status(403).send({
             status: "ERROR",
@@ -21,6 +19,13 @@ exports.addAssignment = async (req, res) => {
         });
         return;
     }
+    const userSnapshot = await usersRef.where("username",
+        "==",
+        username).get();
+    const Uid = userSnapshot.docs[0].id;
+    console.log(Uid);
+    const userRef = usersRef.doc(Uid);
+    const userData = await userRef.get();
     if (!userData.exists) {
         res.status(404).send({
             status: "ERROR",
