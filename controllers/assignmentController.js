@@ -14,6 +14,13 @@ exports.addAssignment = async (req, res) => {
     const userType = body.userType;
     const userRef = await usersRef.doc(uid);
     const userData = await userRef.get();
+    if (!body) {
+        res.status(403).send({
+            status: "ERROR",
+            message: "Invalid parameters",
+        });
+        return;
+    }
     if (!userData.exists) {
         res.status(404).send({
             status: "ERROR",
@@ -36,7 +43,6 @@ exports.addAssignment = async (req, res) => {
     }
     assignments[assignmentId] = assignmentData;
     addedResponse = await userRef.update({ "assignments": JSON.stringify(assignments) });
-    console.log(addedResponse);
     res.status(200).send({
         status: "SUCESS",
         message: "Data Added Sucessfully",
