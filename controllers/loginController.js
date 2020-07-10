@@ -144,7 +144,6 @@ exports.getUserID = async (req, res) => {
     return;
   }
   const userName = body.username;
-  const allUsers = await usersRef.get();
   const currentUserSnapshot = await usersRef.where(
     "username",
     "==",

@@ -68,7 +68,7 @@ exports.AllAssignments = async (req, res) => {
     allUsers.forEach(user => {
         constructObj = {};
         constructObj.name = user.data().username;
-        constructObj.assignment = JSON.parse(user.data().assignments);
+        constructObj.assignment = (user.data().assignments);
         responseObj.assignments.push(constructObj);
     });
     res.status(200).send({
