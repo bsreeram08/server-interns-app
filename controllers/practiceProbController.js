@@ -2,7 +2,7 @@ const firebase = require("firebase-admin");
 const serviceAccount = require("../secretKey.json");
 firebase.initializeApp({
     credential: firebase.credential.cert(serviceAccount),
-    databaseURL: "https://fb-node-learn.firebaseio.com",
+    databaseURL: "https://project-interns.firebaseio.com"
 }, "practiceProblems");
 const db = firebase.firestore();
 const ProblemsRef = db.collection('Problems');
